@@ -5,6 +5,7 @@ import Axios from './config/ajax';
 import iview from 'iview';
 
 import 'iview/dist/styles/iview.css';
+import 'Assets/css/index.less';
 
 Vue.use(iview);
 

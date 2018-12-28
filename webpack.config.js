@@ -16,7 +16,9 @@ const config = {
     },
     resolve: {
         alias: {
-            "iview": path.resolve(__dirname,'./node_modules/iview')
+            "iview": path.resolve(__dirname,'./node_modules/iview'),
+            "Assets": path.resolve(__dirname,'./src/assets'),
+            "Components": path.resolve(__dirname,'./src/components')
         },
         extensions: ['.js', '.json', '.vue', '.less', '.css']
     },
