@@ -37,7 +37,12 @@ const config = {
             {
                 test: /\.(le|c)ss$/, // 处理css、less文件
                 use: [
-                    {loader: MiniCssExtractPlugin.loader },
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: '../'
+                        }
+                    },
                     {loader: "css-loader" },
                     {loader: "less-loader" },
                     {
@@ -66,7 +71,6 @@ const config = {
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2)$/,
-                exclude: /\-enclude\.svg$/,
                 loader: 'url-loader',
                 query: {
                     limit: 10000,

@@ -34,7 +34,7 @@ export default {
     methods: {
         onEdit(){
             this.$router.push({
-                path: `/question/setTest?id=${this.data.id}`,
+                path: `/home/setTest?id=${this.data.id}`,
             });
         },
         onDelete(){

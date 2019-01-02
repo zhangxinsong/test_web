@@ -58,7 +58,7 @@ export default {
         },
         onclick(){
             this.$router.push({
-                path: '/question/setTest'
+                path: '/home/setTest'
             });
         },
     },
