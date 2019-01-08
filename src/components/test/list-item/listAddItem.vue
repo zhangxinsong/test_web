@@ -13,7 +13,7 @@
     width: 100%;
     height: 100%;
     position: relative;
-    padding-top: 30px;
+    padding-top: 35px;
     text-align: center;
     &:hover {
         box-shadow:0px 4px 8px 0px rgba(41,42,45,0.16);
@@ -42,7 +42,7 @@
     }
     :nth-child(2){
         font-size: 12px;
-        margin-top: 5px;
+        margin-top: 10px;
         color: #888888;
     }
 }

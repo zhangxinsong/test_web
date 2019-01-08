@@ -6,7 +6,7 @@
         <div class="c">
             <Form class="form" :model="formItem" :label-width="80">
                 <FormItem label="题目名称" required>
-                    <Input v-model="formItem.name" placeholder="E请输入题目名称"></Input>
+                    <Input v-model="formItem.name" placeholder="请输入题目名称"></Input>
                 </FormItem>
                 <FormItem label="题目类型" required>
                     <RadioGroup v-model="formItem.questionType">
@@ -131,91 +131,75 @@ export default {
     methods: {
         getQuestion(){
             if(this.questionId){
-                questionActions.getQuestionById({
-                    questionBlankId: this.questionBlankId,
-                    questionId: this.questionId,
-                    success: res => {
-                        this.formItem = {
-                            name: res.name,
-                            questionType: res.questionType,
-                            score: res.score,
-                            description: res.description,
-                            priority: res.priority
-                        };
-                        if(res.questionType == 'SINGLE'){
-                            let i = 0;   //将res.question转成[{},{}],并将单选框对应到答案
-                            for(let v in res.question){
-                                this.Squestion.push({label:this.createRandomId(),value:res.question[v]})
-                                if(res.answer[0] == v){
-                                    this.single =  this.Squestion[i].label;
-                                }
-                                i++;
+                this.$ajax.get(`/rest/v1/answer/question/${this.questionBlankId}/${this.questionId}`)
+                .then(res => {
+                    this.formItem = {
+                        name: res.name,
+                        questionType: res.questionType,
+                        score: res.score,
+                        description: res.description,
+                        priority: res.priority
+                    };
+                    if(res.questionType == 'SINGLE'){
+                        let i = 0;   //将res.question转成[{},{}],并将单选框对应到答案
+                        for(let v in res.question){
+                            this.Squestion.push({label:this.createRandomId(),value:res.question[v]})
+                            if(res.answer[0] == v){
+                                this.single =  this.Squestion[i].label;
                             }
-                        }else{
-                            let i = 0;
-                            for(let v in res.question){
-                                this.Mquestion.push({label:this.createRandomId(),value:res.question[v]})
-                                res.answer.map((k)=>{
-                                    if(k==v){
-                                        this.multiple.push(this.Mquestion[i].label);
-                                    }
-                                })
-                                i++;
-                            }
+                            i++;
                         }
-                    },
-                    error: err => {}
+                    }else{
+                        let i = 0;
+                        for(let v in res.question){
+                            this.Mquestion.push({label:this.createRandomId(),value:res.question[v]})
+                            res.answer.map((k)=>{
+                                if(k==v){
+                                    this.multiple.push(this.Mquestion[i].label);
+                                }
+                            })
+                            i++;
+                        }
+                    }
                 })
+                .catch(err => {})
             }
         },
         submit(){
             if(this.formItem.name == ''){
-                this.alert_warning("请输入题目名称");
-                return false;
+                this.$Message.warning("请输入题目名称");
             } else if(this.formItem.description == ''){
-                this.alert_warning("请输入题目描述");
-                return false;
+                this.$Message.warning("请输入题目描述");
             } else if(this.formItem.questionType == 'SINGLE' && this.copyQuestion.length < 2){
-                this.alert_warning("请输入完整的选项");
-                return false;
+                this.$Message.warning("请输入完整的选项");
             } else if(this.formItem.questionType == 'MULTIPLE' && this.copyQuestion.length < 4){
-                this.alert_warning("请输入完整的选项");
-                return false;
+                this.$Message.warning("请输入完整的选项");
             } else if(this.formItem.questionType == 'SINGLE' && this.single == ''){
-                this.alert_warning("请选择答案");
-                return false;
+                this.$Message.warning("请选择答案");
             } else if(this.formItem.questionType == 'MULTIPLE' && this.multiple.length <= 1){
-                this.alert_warning("请选择答案");
-                return false;
+                this.$Message.warning("请选择答案");
             } else if(this.questionId){   //存在questionId，进行编辑接口
-                questionActions.editQuestionById({
-                    questionBlankId: this.questionBlankId,
-                    questionId: this.questionId,
+                this.$ajax.put(`/rest/v1/answer/question/${this.questionBlankId}/${this.questionId}`,{
                     ...this.formItem,
                     question: this.copyQuestion,
                     answer: this.answer,
-                    success: res => {
-                        this.alert_success("保存成功");
-                        this.$router.back();
-                    },
-                    error: err => {
-                        this.alert_warning("网络错误");
-                    }
                 })
+                .then(res => {
+                    this.$Message.success("保存成功");
+                    this.$router.back();
+                })
+                .catch(err => this.$Message.warning("网络错误"))
             }else{   //不存在走新增接口
-                questionActions.addQuestion({
-                    questionBlankId: this.questionBlankId,
+                this.$ajax.post(`/rest/v1/answer/question/${this.questionBlankId}`,{
                     ...this.formItem,
                     question: this.copyQuestion,
                     answer: this.answer,
-                    success: res => {
-                        this.alert_success("保存成功");
-                        this.$router.back();
-                    },
-                    error: err => {
-                        this.alert_warning("网络错误");
-                    }
                 })
+                .then(res => {
+                    this.$Message.success("保存成功");
+                    this.$router.back();
+                })
+                .catch(err => this.$Message.warning("网络错误"))
             }  
         },
         createRandomId() {  //得到一个唯一的随机数

@@ -27,7 +27,7 @@
                     
                 </FormItem>
                 <FormItem label="题目顺序" >
-                    <Switch v-model="formItem.order" size="small"/>
+                    <i-switch v-model="formItem.order" size="small"/>
                     (是否有序)
                 </FormItem>
                 <FormItem label="题目数量" required>
@@ -79,27 +79,17 @@ export default {
     },
     methods: {
         getBlankList(){   //获取题库列表，选择题库下拉
-            questionActions.questionBankList({
-                success: res => {
-                    this.blankList = res;
-                },
-                erroe: err => {
-                    this.alert_warning("获取列表失败");
-                }
-            })
+            this.$ajax.get(`/rest/v1/question/blank/list`,{
+            }).then(res=>this.blankList = res
+            ).catch(err=> this.$Message.warning("获取列表失败"))
         },
         getTest(){  //如果有examId 获取考试信息
             if(this.examId){
-                questionActions.getTestById({
-                    examId: this.examId,
-                    success: res => {
-                        Object.assign(this.formItem,res);
-                        this.date = [new Date(res.startTime),new Date(res.endTime)];
-                    },
-                    erroe: err => {
-                        this.alert_warning("获取列表失败");
-                    }
-                })
+                this.$ajax.get(`/rest/v1/answer/exam/${this.examId}`,{
+                }).then(res=>{
+                    Object.assign(this.formItem,res);
+                    this.date = [new Date(res.startTime),new Date(res.endTime)];
+                }).catch(err=>this.$Message.warning("获取列表失败"))
             }
         },
         submitTest(){
@@ -119,76 +109,70 @@ export default {
                 this.alert_warning("请输入考试地址");
                 return false;
             } else if(this.examId){
-                questionActions.editTest({
+                this.$ajax.put(`/rest/v1/answer/exam/${this.examId}`,{
                     examId: this.examId,
                     ...this.formItem,
                     startTime: this.date[0].valueOf(),
                     endTime: this.date[1].valueOf(),
-                    success: res => {
-                        let examUrl = config.apiHost+'app/index.html#/question/start?examId='+this.examId;
-                        this.$Modal.confirm({
-                            title: '复制考试URL',
-                            content: '<p style="word-break:break-all">'+ examUrl +'</p><input type="text" value='+ examUrl +' id="copyObj" style="opacity:0">',
-                            okText: '复制',
-                            cancelText: '取消',
-                            onOk: ()=>{
-                                let url = document.querySelector('#copyObj');
-                                url.select(); // 选择对象
-                                document.execCommand("Copy");
-                                this.alert_success("保存并复制成功");
-                                setTimeout(()=>{
-                                    this.$router.back();
-                                }, 1000);
-                            },
-                            onCancel: ()=>{
-                                this.alert_success("保存成功");
-                                setTimeout(()=>{
-                                    this.$router.back();
-                                }, 1000);
-                            }
-                        });
-                    },
-                    error: err => {
-                        let error = err.response.data;
-                        if(error.code == 40314){
-                            this.alert_warning(error.msg);
+                }).then(res=>{
+                    let examUrl = 'app/index.html#/question/start?examId='+this.examId;
+                    this.$Modal.confirm({
+                        title: '复制考试URL',
+                        content: '<p style="word-break:break-all">'+ examUrl +'</p><input type="text" value='+ examUrl +' id="copyObj" style="opacity:0">',
+                        okText: '复制',
+                        cancelText: '取消',
+                        onOk: ()=>{
+                            let url = document.querySelector('#copyObj');
+                            url.select(); // 选择对象
+                            document.execCommand("Copy");
+                            this.$Message.success("保存并复制成功");
+                            setTimeout(()=>{
+                                this.$router.back();
+                            }, 1000);
+                        },
+                        onCancel: ()=>{
+                            this.$Message.success("保存成功");
+                            setTimeout(()=>{
+                                this.$router.back();
+                            }, 1000);
                         }
+                    });
+                }).catch(err=>{
+                    if(error.code == 40314){
+                        this.$Message.warning(error.msg);
                     }
                 })
             }else{
-                questionActions.addTest({
+                this.$ajax.post(`/rest/v1/answer/exam`,{
                     ...this.formItem,
                     startTime: this.date[0].valueOf(),
                     endTime: this.date[1].valueOf(),
-                    success: res => {
-                        let examUrl = config.apiHost+'app/index.html#/question/start?examId='+res.id;
-                        this.$Modal.confirm({
-                            title: '复制考试URL',
-                            content: '<p>'+ examUrl +'</p><input type="text" value='+ exanUrl +' id="copyObj" style="opacity:0">',
-                            okText: '复制',
-                            cancelText: '取消',
-                            onOk: ()=>{
-                                let url = document.querySelector('#copyObj');
-                                url.select(); // 选择对象
-                                document.execCommand("Copy");
-                                this.alert_success("保存并复制成功");
-                                setTimeout(()=>{
-                                    this.$router.back();
-                                }, 1000);
-                            },
-                            onCancel: ()=>{
-                                this.alert_success("保存成功");
-                                setTimeout(()=>{
-                                    this.$router.back();
-                                }, 1000);
-                            }
-                        });
-                    },
-                    error: err => {
-                        let error = err.response.data;
-                        if(error.code == 40314){
-                            this.alert_warning(error.msg);
+                }).then(res=>{
+                    let examUrl = 'app/index.html#/question/start?examId='+res.id;
+                    this.$Modal.confirm({
+                        title: '复制考试URL',
+                        content: '<p style="word-break:break-all">'+ examUrl +'</p><input type="text" value='+ examUrl +' id="copyObj" style="opacity:0">',
+                        okText: '复制',
+                        cancelText: '取消',
+                        onOk: ()=>{
+                            let url = document.querySelector('#copyObj');
+                            url.select(); // 选择对象
+                            document.execCommand("Copy");
+                            this.$Message.success("保存并复制成功");
+                            setTimeout(()=>{
+                                this.$router.back();
+                            }, 1000);
+                        },
+                        onCancel: ()=>{
+                            this.$Message.success("保存成功");
+                            setTimeout(()=>{
+                                this.$router.back();
+                            }, 1000);
                         }
+                    });
+                }).catch(err=>{
+                    if(error.code == 40314){
+                        this.$Message.warning(error.msg);
                     }
                 })
             }

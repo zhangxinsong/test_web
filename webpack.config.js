@@ -18,7 +18,8 @@ const config = {
         alias: {
             "iview": path.resolve(__dirname,'./node_modules/iview'),
             "Assets": path.resolve(__dirname,'./src/assets'),
-            "Components": path.resolve(__dirname,'./src/components')
+            "Components": path.resolve(__dirname,'./src/components'),
+            "Util": path.resolve(__dirname,'./src/util')
         },
         extensions: ['.js', '.json', '.vue', '.less', '.css']
     },

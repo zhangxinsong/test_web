@@ -32,27 +32,20 @@ export default {
     },
     methods: {
         getTestList(){
-            questionActions.getTest({
-                success: res => {
-                    this.data = res;
-                }
-            })
+            this.$ajax.get(`/rest/v1/answer/exam?size=100`,{})
+            .then(res => this.data = res)
         },
         onDelete(data){
             this.$confirm({
                 title: "确认删除",
                 content: "确认删除这个考试吗？",
                 onConfirm: () =>{
-                    questionActions.deleteTest({
-                        examId: data.id,
-                        success: res => {
-                            this.alert_success("删除成功");
-                            this.getTestList();
-                        },
-                        error: err => {
-                            this.alert_warning("网络错误");
-                        }
+                    this.$ajax.delete(`/rest/v1/answer/exam/${data.id}`,{})
+                    .then(res => {
+                        this.$Message.success("删除成功");
+                        this.getTestList();
                     })
+                    .catch(err => this.$Message.warning("网络错误"))
                 }
             });
         },

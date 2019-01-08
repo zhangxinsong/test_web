@@ -1,9 +1,9 @@
 const api = {
     development: {
-        host: 'http://0.0.0.1'
+        host: 'http://140.143.133.139:8000'
     },
     production:{
-        host: 'http://0.0.0.2'
+        host: 'http://140.143.133.139:8000'
     }
 };
 

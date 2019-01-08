@@ -222,10 +222,10 @@ export default {
             return this.$route.query.id
         },
         importUrl(){
-            return questionActions.getImportUrl(this.questionBlankId);
+            return `http://140.143.133.139:8000/rest/v1/answer/question/${this.questionBlankId}/import`;
         },
         templateUrl(){
-            return questionActions.getTemplateUrl(this.questionBlankId);
+            return `http://140.143.133.139:8000/rest/v1/answer/question/${this.questionBlankId}/template`;
         },
         start(){
             return (this.pageNum - 1) * 10;
@@ -233,21 +233,17 @@ export default {
     },
     methods: {
         getQuestionList(){   //获取题目列表
-            questionActions.questionList({
-                questionBlankId: this.questionBlankId,
-                start: this.start,
-                success: res => {
-                    this.data = res.data;
-                    this.total = res.total;
-                    this.loadingList = false;
-                },
-                err: res => {
-                }
+            this.$ajax.get(`/rest/v1/answer/question/${this.questionBlankId}/list?start=${this.start}&size=10`,{})
+            .then(res => {
+                this.data = res.data;
+                this.total = res.total;
+                this.loadingList = false;
             })
+            .catch(err => {})
         },
         editQuestion(id) {   // 点击编辑题目
             this.$router.push({
-                path: '/question/addQuestion',
+                path: '/home/addQuestion',
                 query: {
                     questionBlankId: this.questionBlankId,
                     questionId : id
@@ -255,21 +251,16 @@ export default {
             });
         },
         deleteQuestion(id) {   //删除题目
-            questionActions.deleteQuestion({
-                questionBlankId: this.questionBlankId,
-                questionId: id,
-                success: res => {
-                    this.getQuestionList();
-                    this.alert_success("删除成功");
-                },
-                err: res => {
-                    this.alert_warning("删除失败");
-                }
+            this.$ajax.delete(`/rest/v1/answer/question/${this.questionBlankId}/${id}`,{})
+            .then(res => {
+                this.getQuestionList();
+                this.$Message.success("删除成功");
             })
+            .catch(err => this.$Message.warning("删除失败"))
         },
         addQuestion(){     //添加题目
             this.$router.push({
-                path: '/question/addQuestion',
+                path: '/home/addQuestion',
                 query: {
                     questionBlankId: this.questionBlankId
                 }

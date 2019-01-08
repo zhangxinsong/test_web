@@ -6,8 +6,8 @@
                 <span class="status">{{this.status.text}}</span>
             </div>
             <div class="time">
-                <span>时间：{{dateFormat(data.startTime, 'yyyy.MM.dd')}}-{{dateFormat(data.endTime, 'yyyy.MM.dd')}}</span>
-                <input type="text" id="copyObj" :value="url+'app/index.html#/question/start?examId='+data.id" style="opacity:0"/>
+                <span>时间：{{startTime}}-{{endTime}}</span>
+                <input type="text" id="copyObj" :value="+'app/index.html#/question/start?examId='+data.id" style="opacity:0"/>
             </div>
         </div>
         <div class="cover">
@@ -19,10 +19,10 @@
 </template>
 
 <script>
+import util from 'Util/util.js'
 export default {
     data(){
         return {
-            url: config.apiHost,
         }
     },
     props: {
@@ -44,10 +44,16 @@ export default {
             let url = document.querySelector('#copyObj');
             url.select(); // 选择对象
             document.execCommand("Copy");
-            this.alert_success("复制成功");
+            this.$Message.success("复制成功");
         }
     },
     computed: {
+        startTime(){
+            return util.formatDate(new Date(this.data.startTime), 'YYYY.MM.DD');
+        },
+        endTime(){
+            return util.formatDate(new Date(this.data.endTime), 'YYYY.MM.DD');
+        },
         status(){
             const now = Date.now();
             if(this.data.startTime > now){
@@ -108,6 +114,7 @@ export default {
         }
         .time{
             margin-top: 50px;
+            font-size: 12px;
         }
     }
     &:hover {

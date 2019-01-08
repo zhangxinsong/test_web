@@ -49,14 +49,9 @@ export default {
     },
     methods: {
         getQuestionBankList(){    //获取题库列表
-            questionActions.questionBankList({
-                success: res => {
-                    this.data = res;
-                },
-                erroe: err => {
-                    this.alert_warning("获取列表失败");
-                }
-            })
+            this.$ajax.get(`/rest/v1/question/blank/list`,{})
+            .then(res => this.data = res)
+            .catch(err => this.$Message.warning("获取列表失败"))
         },
         onEdit(data){  //弹出编辑题库modal
             this.bankName = data.name;
@@ -66,17 +61,12 @@ export default {
             this.addBank = true;
         },
         onEnable(data){  //启用禁用题库
-            questionActions.enableQuestionBank({
-                blankId: data.id,
-                able: data.enable ? true : false,
-                success: res => {
-                    this.alert_success(data.enable ? "禁用成功" : "启用成功");
-                    this.getQuestionBankList();
-                },
-                error: res => {
-                    this.alert_warning(data.enable ? "禁用失败" : "启用失败");
-                }
+            this.$ajax.put(`/rest/v1/question/blank/${data.id}/${data.enable?'disable':'enable'}`,{})
+            .then(res => {
+                this.$Message.success(data.enable ? "禁用成功" : "启用成功");
+                this.getQuestionBankList();
             })
+            .catch(err => this.$Message.warning(data.enable ? "禁用失败" : "启用失败"))
         },
         onAdd(){
             this.isEditBank = false;
@@ -84,31 +74,32 @@ export default {
         },
         ok(){
             if(this.isEditBank){
-                questionActions.editQuestionBank({
-                    blankId: this.blankId,
+                this.$ajax.put(`/rest/v1/question/blank/${this.blankId}`,{
                     description: this.bankDescription,
                     name: this.bankName,
-                    success: res => {
-                        this.bankDescription = '',
-                        this.bankName = '',
-                        this.getQuestionBankList();
-                    },
-                    error: res => {
-                        this.alert_warning("编辑失败");
-                    }
+                })
+                .then(res => {
+                    this.$Message.success("修改成功");
+                    this.bankDescription = '',
+                    this.bankName = '',
+                    this.getQuestionBankList();
+                })
+                .catch(err => {
+                    this.$Message.warning("编辑失败");
                 })
             }else{
-                questionActions.addQuestionBank({
+                this.$ajax.post(`/rest/v1/question/blank`,{
                     description: this.bankDescription,
                     name: this.bankName,
-                    success: res => {
-                        this.bankDescription = '',
-                        this.bankName = '',
-                        this.getQuestionBankList();
-                    },
-                    error: res => {
-                        this.alert_warning("添加失败");
-                    }
+                })
+                .then(res => {
+                    this.$Message.success("修改成功");
+                    this.bankDescription = '',
+                    this.bankName = '',
+                    this.getQuestionBankList();
+                })
+                .catch(err => {
+                    this.$Message.warning("编辑失败");
                 })
             }
         },

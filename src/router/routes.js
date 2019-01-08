@@ -1,8 +1,15 @@
+import store from '../store/index.js';
+
 export default [{
     path: '',
     component: () =>
-        import ('../components/index.vue'),
-    redirect: '/home'
+        import ('../components/login/login.vue'),
+    redirect: '/login'
+},{
+    name: 'login',
+    path: '/login',
+    component: () =>
+        import ('../components/login/login.vue'),
 },{
     path: '/home',
     component: () =>
@@ -36,5 +43,15 @@ export default [{
         name: 'addQuestion',
         component: () =>
             import ('../components/question-bank/add-question/add-question.vue'),
+    },{
+        path: 'approve',
+        name: 'approve',
+        component: () =>
+            import ('../components/approve/index.vue'),
+    },{
+        path: 'html5',
+        name: 'html5',
+        component: () =>
+            import ('../components/html5/index.vue'),
     }]
 }]

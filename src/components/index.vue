@@ -88,7 +88,7 @@ export default {
             position: absolute;
             top: 0;bottom: 0;
             left: 0;
-            width: 190px;
+            width: 180px;
             background-color: #fff;
             h1{
                 width: 100%;
@@ -103,8 +103,8 @@ export default {
         }
         .right-slide {
             position: absolute;
-            top: 12px;bottom: 0;
-            left: 200px;right: 0;
+            top: 0;bottom: 0;
+            left: 185px;right: 0;
             background-color: #e6e9e9;
             .right-wrapper {
                 height: 100%;

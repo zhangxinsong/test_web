@@ -36,7 +36,7 @@ export default {
         },
         onQuestion(){
             this.$router.push({
-                path: '/question/questionList',
+                path: '/home/questionList',
                 query: {id: this.data.questionBlankDO.id}
             });
         },
