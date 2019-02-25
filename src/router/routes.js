@@ -53,5 +53,10 @@ export default [{
         name: 'html5',
         component: () =>
             import ('../components/html5/index.vue'),
+    },{
+        path: 'user',
+        name: 'user',
+        component: () =>
+            import ('../components/user/user.vue'),
     }]
 }]

@@ -7,13 +7,11 @@
             </div>
             <div class="time">
                 <span>时间：{{startTime}}-{{endTime}}</span>
-                <input type="text" id="copyObj" :value="+'app/index.html#/question/start?examId='+data.id" style="opacity:0"/>
             </div>
         </div>
         <div class="cover">
             <i-button type="primary" long class="edit" @click="onEdit">编辑</i-button>
             <i-button type="primary" long class="delete" @click="onDelete">删除</i-button>
-            <i-button type="primary" long class="delete" @click="onCopy">考试地址</i-button>
         </div>
     </div>
 </template>
@@ -39,12 +37,6 @@ export default {
         },
         onDelete(){
             this.$emit('onDelete',this.data);
-        },
-        onCopy(){
-            let url = document.querySelector('#copyObj');
-            url.select(); // 选择对象
-            document.execCommand("Copy");
-            this.$Message.success("复制成功");
         }
     },
     computed: {
@@ -94,7 +86,7 @@ export default {
         background:#ffffff;
         box-shadow:0px 4px 8px 0px rgba(41,42,45,0.16);
         border-radius: 4px;
-        padding: 8px 60px;
+        padding: 25px 60px;
     }
     .content{
         width: 100%;
@@ -160,7 +152,7 @@ export default {
         &.edit {
         }
         &.delete {
-            margin-top: 8px;
+            margin-top: 12px;
         }
     }
 }

@@ -336,7 +336,7 @@ export default {
                 color: #fff;
                 background: #E14C46;
                 border-radius: 4px;
-                padding: 6px 18px;
+                padding: 10px 20px;
                 margin-top: 14px;
                 margin-right: 40px;
                 cursor: pointer;
@@ -347,7 +347,7 @@ export default {
                 color: #fff;
                 background: #E14C46;
                 border-radius: 4px;
-                padding: 6px 18px;
+                padding: 10px 20px;
                 margin-top: 14px;
                 margin-right: 20px;
                 cursor: pointer;
