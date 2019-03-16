@@ -58,5 +58,10 @@ export default [{
         name: 'user',
         component: () =>
             import ('../components/user/user.vue'),
+    },{
+        path: 'userEdit',
+        name: 'userEdit',
+        component: () =>
+            import ('../components/user/editUser.vue'),
     }]
 }]

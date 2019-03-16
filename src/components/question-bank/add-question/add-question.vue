@@ -262,7 +262,7 @@ export default {
         position: absolute;
         left: 0;right: 0;
         bottom: 0;
-        height: 50px;
+        height: 70px;
         text-align: center;
         padding-top: 10px;
     }
