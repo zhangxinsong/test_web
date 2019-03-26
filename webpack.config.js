@@ -45,7 +45,12 @@ const config = {
                         }
                     },
                     {loader: "css-loader" },
-                    {loader: "less-loader" },
+                    {
+                        loader: "less-loader",
+                        options: {
+                            javascriptEnabled: true
+                        }
+                    },
                     {
                         loader: "postcss-loader",
                         options: {
