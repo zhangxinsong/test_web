@@ -74,7 +74,7 @@ export default {
         width: 100%;
         height: 100%;
         position: relative;
-        background: #f3f3f3;
+        background: #fff;
         .h{
             position: absolute;
             top: 0;
