@@ -141,6 +141,7 @@ export default {
                         priority: res.priority
                     };
                     if(res.questionType == 'SINGLE'){
+                        this.Mquestion.push({label:this.createRandomId(),value:''},{label:this.createRandomId(),value:''});
                         let i = 0;   //将res.question转成[{},{}],并将单选框对应到答案
                         for(let v in res.question){
                             this.Squestion.push({label:this.createRandomId(),value:res.question[v]})
@@ -150,6 +151,7 @@ export default {
                             i++;
                         }
                     }else{
+                        this.Squestion.push({label:this.createRandomId(),value:''},{label:this.createRandomId(),value:''});
                         let i = 0;
                         for(let v in res.question){
                             this.Mquestion.push({label:this.createRandomId(),value:res.question[v]})
@@ -224,7 +226,7 @@ export default {
     mounted(){
         if(!this.$route.query.questionId){   //如果新增题目，push两个默认选项
             this.Squestion.push({label:this.createRandomId(),value:''},{label:this.createRandomId(),value:''});
-            this.Mquestion.push({label:this.createRandomId(),value:''},{label:this.createRandomId(),value:''})
+            this.Mquestion.push({label:this.createRandomId(),value:''},{label:this.createRandomId(),value:''});
         }
         this.getQuestion();
     }
