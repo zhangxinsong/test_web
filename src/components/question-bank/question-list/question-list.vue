@@ -222,10 +222,10 @@ export default {
             return this.$route.query.id
         },
         importUrl(){
-            return `http://140.143.133.139:8000/rest/v1/answer/question/${this.questionBlankId}/import`;
+            return `http://140.143.133.139:8080/rest/v1/answer/question/${this.questionBlankId}/import`;
         },
         templateUrl(){
-            return `http://140.143.133.139:8000/rest/v1/answer/question/${this.questionBlankId}/template`;
+            return `http://140.143.133.139:8080/rest/v1/answer/question/${this.questionBlankId}/template`;
         },
         start(){
             return (this.pageNum - 1) * 10;

@@ -115,28 +115,8 @@ export default {
                     startTime: this.date[0].valueOf(),
                     endTime: this.date[1].valueOf(),
                 }).then(res=>{
-                    let examUrl = 'app/index.html#/question/start?examId='+this.examId;
-                    this.$Modal.confirm({
-                        title: '复制考试URL',
-                        content: '<p style="word-break:break-all">'+ examUrl +'</p><input type="text" value='+ examUrl +' id="copyObj" style="opacity:0">',
-                        okText: '复制',
-                        cancelText: '取消',
-                        onOk: ()=>{
-                            let url = document.querySelector('#copyObj');
-                            url.select(); // 选择对象
-                            document.execCommand("Copy");
-                            this.$Message.success("保存并复制成功");
-                            setTimeout(()=>{
-                                this.$router.back();
-                            }, 1000);
-                        },
-                        onCancel: ()=>{
-                            this.$Message.success("保存成功");
-                            setTimeout(()=>{
-                                this.$router.back();
-                            }, 1000);
-                        }
-                    });
+                    this.$Message.success("保存成功");
+                    this.$router.back();
                 }).catch(err=>{
                     if(error.code == 40314){
                         this.$Message.warning(error.msg);
@@ -148,28 +128,8 @@ export default {
                     startTime: this.date[0].valueOf(),
                     endTime: this.date[1].valueOf(),
                 }).then(res=>{
-                    let examUrl = 'app/index.html#/question/start?examId='+res.id;
-                    this.$Modal.confirm({
-                        title: '复制考试URL',
-                        content: '<p style="word-break:break-all">'+ examUrl +'</p><input type="text" value='+ examUrl +' id="copyObj" style="opacity:0">',
-                        okText: '复制',
-                        cancelText: '取消',
-                        onOk: ()=>{
-                            let url = document.querySelector('#copyObj');
-                            url.select(); // 选择对象
-                            document.execCommand("Copy");
-                            this.$Message.success("保存并复制成功");
-                            setTimeout(()=>{
-                                this.$router.back();
-                            }, 1000);
-                        },
-                        onCancel: ()=>{
-                            this.$Message.success("保存成功");
-                            setTimeout(()=>{
-                                this.$router.back();
-                            }, 1000);
-                        }
-                    });
+                    this.$Message.success("保存成功");
+                    this.$router.back();
                 }).catch(err=>{
                     if(error.code == 40314){
                         this.$Message.warning(error.msg);
